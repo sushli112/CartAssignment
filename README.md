@@ -4,10 +4,11 @@ SHOPPING CART USING PAYPAL CHECKOUT
 
 Step 1: Clone the project from repository
 Step 2: Go to the folder where u have cloned in command prompt and run "json-server --watch data.json" to start the json server
-Step 3: Go to folder where u have cloned in command prompt and run "npm run dev" to lanuch the client and server.
-Step 4: When both the client and server are up then open the client url "localhost:3000" ,here you will have all the cart related information i.e items in the cart,final amount calculation and shipping address
-Step 5: Click on paypal checkout button
-Step 6: Sign in with the paypal account
-Step 7 : Validate the card details and click on submit.
+Step 3: Under src folder we have two sub folder i.e client and server containing client and server codes.
+Step 4: Go to folder where u have cloned in command prompt and run "npm run dev" to lanuch the client and server.
+Step 5: When both the client and server are up then open the client url "localhost:3000" ,here you will have all the cart related information i.e items in the cart,final amount calculation and shipping address
+Step 6: Click on paypal checkout button
+Step 7: Sign in with the paypal account
+Step 8 : Validate the card details and click on submit.
 
 Thats it !!!!!! Transaction is completed
