@@ -75,7 +75,7 @@ app
     // 2. Get the payment ID and the payer ID from the request body.
     var paymentID = req.body.paymentID;
     var payerID = req.body.payerID;
-
+    var total = req.body.amount;
     // 3. Call /v1/payments/payment/PAY-XXX/execute to finalize the payment.
     request.post(
       PAYPAL_API + "/v1/payments/payment/" + paymentID + "/execute",
@@ -89,7 +89,7 @@ app
           transactions: [
             {
               amount: {
-                total: "30.11",
+                total: total,
                 currency: "USD"
               }
             }

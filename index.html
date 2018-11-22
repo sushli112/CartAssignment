@@ -241,10 +241,12 @@
         onAuthorize: function(data, actions) {
          
           // Make a request to your server
+          let totalPrice = document.getElementById("total").innerHTML;
           return actions.request
             .post("/api/execute-payment/", {
               paymentID: data.paymentID,
-              payerID: data.payerID
+              payerID: data.payerID,
+              amount : totalPrice
             })
             .then(function(res) {
 
