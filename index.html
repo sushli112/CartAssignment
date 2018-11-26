@@ -1,0 +1,269 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,shrink-to-fit=no"
+    />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <link
+      rel="icon"
+      href="src/img/cartIcon.png"
+      type="image/jpg"
+      sizes="16x16"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+
+    <title>YOUR CART</title>
+  </head>
+  <body>
+    <h1 id="cartHeader">YOUR SHOPPING BAG</h1>
+    <main id="ShoppingCart"></main>
+    <section id="CalculationContainer"></section>
+    <section id="shipmentContainer"></section>
+    <script id="itemTemplate" type="text/x-handlebars-template">
+                  <div class="shopping-cart">
+                    <div class="column-labels">
+                        <label class="product-image boldLabel"> {{itemList.length}} ITEMS</label>
+                        <label class="product-details">Product</label>
+                        <label class="tax">Tax</label>
+                        <label class="product-quantity">Quantity</label>
+                        <label class="total-price">Total</label>
+                    </div>
+                {{#each items}}
+                    <div class="product">
+                        <div class="product-image">
+                        <img id="image{{id}}" src="{{image}}" alt="item image" data-toggle="modal" data-target="#itemView"/>
+                        </div>
+                        <div class="product-details">
+                        <div id="pname{{id}}" class="product-title">{{name}}</div>
+                        <p id="pdesc{{id}}" class="product-description">
+                              Description  :{{description}}
+                        </p>
+                        <p id="sku{{id}}" class="sku">
+                          sku : {{sku}}
+                        </p>
+                        </div>
+                        <div id ="tax{{id}}" class="tax">{{tax}}</div>
+                        <div class="product-quantity">
+                        <input id ="quantity{{id}}" type="number" value="{{quantity}}" min="1" aria-label="Quantity"/>
+                        </div>
+
+                        <div id="price{{id}}" class="total-price">{{price}}</div>
+                    </div>
+            {{/each}}
+    </div>
+    </script>
+    <script id="finalCalculation" type="text/x-handlebars-template">
+        <div class="shopping-cart">
+
+            <div class="totals">
+                <div class="totals-item">
+                      <label>TOTAL</label>
+                      <div class="totals-value" id="total">{{total}}</div>
+                    </div>
+                <div class="totals-item">
+                  <label>Tax</label>
+                  <div class="totals-value" id="tax">{{details.tax}}</div>
+                </div>
+                <div class="totals-item">
+                      <label> SHIPPING CHARGE</label>
+                      <div class="shipping-charge" id="shipping">{{details.shipping}}</div>
+                    </div>
+                    <div class="totals-item">
+                        <label> HANDLING FEE</label>
+                        <div class="shipping-charge" id="handling_fee">{{details.handling_fee}}</div>
+                      </div>
+                      <div class="totals-item">
+                          <label> INSURANCE</label>
+                          <div class="shipping-charge" id="insurance">{{details.insurance}}</div>
+                        </div>
+                        <div class="totals-item">
+                            <label> SHIPPING DISCOUNT</label>
+                            <div class="shipping-charge" id="shipping_discount">{{details.shipping_discount}}</div>
+                          </div>
+                        
+                <div class="totals-item totals-item-total">
+                  <label>SUBTOTAL</label>
+                  <div class="totals-value" id="subtotal">{{details.subtotal}}</div>
+                </div>
+              </div> 
+        </div>
+    </script>
+    <script id="shipmentAddress" type="text/x-handlebars-template">
+          <div class="shopping-cart">
+              <div id="confirm" class="hidden">
+                  <div>Ship to:</div>
+                  <table>
+                    <tr><td><label for="text">First Name :</label></td>
+                        <td><input type="text" id="firstName" value="{{first_name}}"/></td></tr>
+                    <tr><td><label for="text">Last Name :</label></td>
+                         <td><input type="text" id="lastName" value="{{last_name}}"/></td></tr>
+                    <tr><td><label for="email">Email :</label></td>
+                         <td><input type="email" id="email" value="{{email}}"/></td></tr>
+                    <tr><td><label for="phone">Contact No: :</label></td>
+                         <td><input type="tel" id="phone" value="{{phone}}"/></td></tr>
+                         <tr><td><label for="line1">line1:</label></td>
+                          <td><input type="text" id="line1" value="{{line1}}"/></td></tr>
+                          <tr><td><label for="line2">line2 :</label></td>
+                            <td><input type="text" id="line2" value="{{line2}}"/></td></tr>
+                    <tr><td><label for="city">City :</label></td>
+                         <td><input id="city" type="text" value="{{city}}"></td></tr>
+                    <tr><td><label for="zip">Zip:</label></td>
+                         <td> <input type="text" id="zip" value="{{postal_code}}"></td></tr>
+                    <tr><td><label for="state">State : </label></td>
+                         <td><input type="text" id="state" value="{{state}}"/></td></tr>
+                    <tr><td><label for="country">Country : </label></td>
+                         <td><input type="text" id="country" value="{{country_code}}"></td></tr>
+                  </table>
+                  </div>
+                  </div> 
+            </div>
+    </script>
+    
+
+            </div>
+
+                 
+    </script>
+  </body>
+</html>
+
+
+  <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+<div class ="checkout">
+    <div id="checkoutLabel" >Proceed to checkout with PayPal</div><div id="paypal-button"></div>
+</div>
+ 
+
+  <script>
+    paypal.Button.render(
+      {
+        env: "sandbox", // Or 'production'
+        // Set up the payment:
+        // Add a payment callback
+        payment: function(data, actions) {
+          // form a cartDetail json to feed to server and then to paypal api
+          if (document.getElementById("pname1") != undefined) {
+            let pname1 = document.getElementById("pname1").innerHTML;
+            let price1 = document.getElementById("price1").innerHTML;
+            let quantity1 = document.getElementById("quantity1").value;
+            let sku1 = document.getElementById("sku1").innerHTML;
+            let tax1 = document.getElementById("tax1").innerHTML;
+            let pdesc1 = document.getElementById("pdesc1").innerHTML;
+
+            let pname2 = document.getElementById("pname2").innerHTML;
+            let price2 = document.getElementById("price2").innerHTML;
+            let quantity2 = document.getElementById("quantity2").value;
+            let sku2 = document.getElementById("sku2").innerHTML;
+            let tax2 = document.getElementById("tax2").innerHTML;
+            let pdesc2 = document.getElementById("pdesc2").innerHTML;
+
+            let totalPrice = document.getElementById("total").innerHTML;
+
+            let firstName = document.getElementById("firstName").value;
+            let lastName = document.getElementById("lastName").value;
+            let fullName = firstName +" "+lastName;
+            let line1 = document.getElementById("line1").value;
+            let line2 = document.getElementById("line2").value;
+            let email = document.getElementById("email").value;
+            let phone = document.getElementById("phone").value;
+            let city = document.getElementById("city").value;
+            let state = document.getElementById("state").value;
+            let zip = document.getElementById("zip").value;
+            let country = document.getElementById("country").value;
+            let tax =  document.getElementById("tax").innerHTML;
+            let shipping =  document.getElementById("shipping").innerHTML;
+            let handling_fee =  document.getElementById("handling_fee").innerHTML;
+            let insurance = document.getElementById("insurance").innerHTML;
+            let shipping_discount = document.getElementById("shipping_discount").innerHTML;
+            var subTotal = document.getElementById("subtotal").innerHTML;
+            var cartDetails = JSON.stringify({
+              amount: {
+                total: totalPrice,
+                currency: "USD",
+                details: {
+                  subtotal: subTotal,
+                  tax: tax,
+                  shipping: shipping,
+                  handling_fee: handling_fee,
+                  insurance: insurance,
+                  shipping_discount: shipping_discount
+                }
+              },
+              item_list: {
+                items: [
+                  {
+                    name: pname1,
+                    description: pdesc1,
+                    quantity: quantity1,
+                    price: price1,
+                    tax: tax1,
+                    sku: sku1,
+                    currency: "USD"
+                  },
+                  {
+                    name: pname2,
+                    description: pdesc2,
+                    quantity: quantity2,
+                    price: price2,
+                    tax: tax2,
+                    sku: sku2,
+                    currency: "USD"
+                  }
+                ],
+                shipping_address: {
+                  recipient_name: firstName,
+                  line1: line1,
+                  line2: line2,
+                  city: city,
+                  country_code: country,
+                  postal_code: zip,
+                  phone: phone,
+                  state: state
+                }
+              }
+            });
+          }
+          // Make a request to your server to start payment process
+          return actions.request
+            .post("/api/create", { data: cartDetails, datatype: "json" })
+            .then(function(res) {
+              // 3. Return res.id from the response
+              return res.id;
+            });
+        },
+        // Execute the payment:
+        //  Add an onAuthorize callback
+        onAuthorize: function(data, actions) {
+         
+          // Make a request to your server
+          let totalPrice = document.getElementById("total").innerHTML;
+          return actions.request
+            .post("/api/execute-payment/", {
+              paymentID: data.paymentID,
+              payerID: data.payerID,
+              amount : totalPrice
+            })
+            .then(function(res) {
+
+              //Show the buyer a confirmation message.
+              document.getElementsByTagName("body")[0].innerHTML ="";
+              var h1 = document.createElement("h1");
+              var node = document.createTextNode("Your Transaction has been completed Successfully");
+              h1.appendChild(node);
+              h1.style.color="Green";
+              h1.style.textAlign = "center";
+              var element = document.createElement("div2");
+              element.appendChild(h1);
+              document.getElementsByTagName("body")[0].appendChild(element);
+            });
+        }
+      },
+      "#paypal-button"
+    );
+  </script>
+
