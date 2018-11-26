@@ -5,11 +5,7 @@
   "main": "./src/server/js/index.js",
   "scripts": {
     "start": "node ./src/server/index.js --host 0.0.0.0",
-    "build": "webpack --mode production",
-    "json-server": "json-server --watch data.json --port 8082",
-    "client": "webpack-dev-server --mode development --devtool inline-source-map --hot --watch-poll",
-    "server": "nodemon ./src/server/index.js --host 0.0.0.0",
-    "dev": "concurrently \"npm run server\" \"npm run client\" \"npm run json-server\""
+    "build": "webpack --mode production"
   },
   "author": "",
   "license": "ISC",
